@@ -1,12 +1,15 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { getData, deleteData } from "../../utils/api";
 
 function Dis({ data, setData, setEdit, setId }) {
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     getData().then((res) => {
       const newArr = [];
       res.data.forEach((p) => newArr.push(p));
       setData((arr) => [...arr, ...newArr]);
+      setLoading(false);
     });
   }, [setData]);
   const onDelete = (id) => {
@@ -21,6 +24,7 @@ function Dis({ data, setData, setEdit, setId }) {
   return (
     <Fragment>
       <h2>Data</h2>
+      {loading && <div className="loading"></div>}
       <table className="table table-striped">
         <tbody>
           {data.map((item, i) => (
